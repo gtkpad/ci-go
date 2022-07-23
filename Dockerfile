@@ -1,12 +1,10 @@
-FROM golang as builder
+FROM golang:latest
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY . .
 
-RUN go build -v -o /usr/src/app ./...
+RUN go build -o math
+RUN chmod +x math
 
-FROM scratch
-WORKDIR /app
-COPY --from=builder /usr/src/app .
-CMD ["./math"]
+# CMD [""]
