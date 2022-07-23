@@ -1,9 +1,12 @@
-FROM golang:latest
+FROM golang as builder
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
 COPY . .
+RUN go mod download && go mod verify
+RUN go build -v -o /usr/src/app ./...
 
-RUN go build -o math
-
+FROM scratch
+WORKDIR /app
+COPY --from=builder /usr/src/app .
 CMD ["./math"]
